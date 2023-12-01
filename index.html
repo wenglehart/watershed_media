@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Display a popup on hover</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoid2VuZ2xlMSIsImEiOiJjbHBtaWx0N2IwMGljMmxwNjBsMnU4a2E4In0.Dzf3G-WBKzDfgnXsGHiMXw';
+    
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/wengle1/clpmht24a00b901q11t8r1iyj',
+            center: [-77.04, 38.907],
+            zoom: 2.5
+        });
+
+        map.on('load', () => {
+            map.addSource('places', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                // NEW YORK CITY
+                                'description': '<strong>An Indian official plotted to assassinate a Sikh separatist leader in New York, US prosecutors say</strong><p>U.S. officials became aware in the spring of the plot to kill Gurpatwant Singh Pannun, who advocated for the creation of a sovereign Sikh state and is considered a terrorist by the Indian government. The U.S. Drug Enforcement Administration interceded and set up a sting, with an undercover agent posing as a hitman, after the conspirators recruited an international narcotics trafficker in the plot to kill the activist for $100,000.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-74.0060, 40.7128]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                // WASHINGTON DC
+                                'description': '<strong>Anthony Fauci will testify before Congress on COVID origins and the US pandemic response</strong><p>House Republicans have investigated whether Fauci or other U.S. government officials took part in any sort of cover-up about the origin of the deadly virus. Fauci, who served under both Republican and Democratic presidents, has repeatedly called the GOP criticism nonsense. Wenstrup, who is also a longtime member of the House Intelligence Committee, has accused Fauci and U.S. intelligence of withholding key facts about its investigation into the coronavirus. Republicans on the committee last year issued a staff report arguing that there are “indications” that the virus may have been developed as a bioweapon inside China Wuhan Institute of Virology.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-77.0369, 38.9072]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                // BEIJING
+                                'description': '<strong>Exclusive-China lures hundreds of Taiwan politicians with cheap trips before election - sources</strong><p>Beijing has sponsored cut-price trips to China for hundreds of Taiwanese politicians ahead of key elections on the island, according to Taiwan sources and documents, unnerving officials with a broad campaign that one called "election interference". President Tsai Ing-wen and other Taiwan officials have warned that China might try to sway voters toward candidates seeking closer ties with Beijing in the elections, which could define the islands relations with China. But the scale of the Chinese activity has not previously been reported.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [116.4074, 39.9042]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                // LONDON
+                                'description': '<strong>Diplomatic spat between UK and Greece over Parthenon sculptures</strong><p>A diplomatic spat erupted Monday between Greece and Britain after the UK canceled a planned meeting of their prime ministers, prompting the Greek premier to accuse his British counterpart of trying to avoid discussing the contested Parthenon Marbles</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-0.1278, 51.5074]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //Brussels
+                                'description': '<strong>Brussels to revive ties with Turkey despite differences and stalled EU membership talks</strong><p>Increased cooperation with Turkey on trade, energy, transport and migration management were among the recommendations unveiled on Wednesday by the European Commission.The two sides may not be seeing "eye to eye" on many issues, Olivér Várhelyi, the blocs Commissioner for Neighbourhood and Enlargement, told reporters but "theres more that unites us than what divides us."</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [4.3517, 50.8503]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //TOKYO
+                                'description': '<strong>Tokyo temporarily grounds its Ospreys, urges U.S. military to follow suit</strong><p>Japan’s government said Thursday that it has temporarily grounded its fleet of tilt-rotor V-22 Osprey aircraft following Wednesdays crash of a U.S. Air Force CV-22B model Osprey off the coast of Japan that has resulted in at least one death and seven other crewmembers still missing. Tokyo also appealed to the U.S. military based in the country to suspend Osprey flights in the region other than those being used in the search effort for the missing hybrid aircraft that can take off and land like a helicopter but fly like an airplane.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [139.6917, 35.6895]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //PARIS
+                                'description': '<strong>Forty years on, can legacy of pioneering anti-racism march help a divided France?</strong><p>It was 1983, when France was plagued by numerous racist murders of people of north African background, amid anger on housing estates and allegations of police violence. Already, Djaïdja, from an Algerian family on the Minguettes housing estate in Vénissieux outside Lyon, had held a sit-in and a hunger-strike for equal rights and an end to clashes between police and youths.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [2.3522, 48.8566]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //MOSCOW
+                                'description': '<strong>Russias Main Link to China Paralyzed After Tunnel Sabotage—Reports</strong><p>Russias main rail link to China has been left paralyzed after Ukraines Security Service blew up a tunnel in the Russian republic of Buryatia, it has been reported. The explosions in the Severomuysky Tunnel were masterminded by the Security Service of Ukraine (SBU), "paralyzing the only serious route of railway communication between the Russian Federation and China," news outlet RBC-Ukraine reported on Thursday, citing sources with knowledge of the matter.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [37.6173, 55.7558]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //BERLIN
+                                'description': '<strong>Germanys Budget Chaos Sows Uncertainty For the EV Industry</strong><p>Chancellor Olaf Scholzs government had earmarked some €212 billion ($231 billion) through 2027 for projects including charging stations, battery plants and semiconductor factories. A surprise ruling by the nation’s top court has upended fiscal planning and raised doubts as to whether all the funds still will be available.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [13.4050, 52.5200]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //GENEVA
+                                'description': '<strong>Switzerland to bid for 2030 or 2034 Winter Games</strong><p>Switzerland on Friday announced it would bid for either the 2030 or 2034 Winter Olympic and Paralympic Games, which would be the third time the Alpine country has hosted the event. Switzerland has pledged to organise a "decentralised" Games using existing facilities spread across the country of around 9 million people. It said the Games would be largely financed by the private sector.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [6.1432, 46.2044]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                // BRASILIA
+                                'description': '<strong>Argentinas Milei invites Brazils Lula to inauguration, travels to US</strong><p>Argentinas President-elect Javier Milei has invited Brazils leader Luiz Inacio Lula da Silva to his Dec. 10 inauguration and praised their countries’ ties, after harshly criticizing Lula during his campaign. Milei, a libertarian economist who won a surprise victory in the November 14 election, also traveled to the United States on Sunday to meet with officials and investors.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-47.8825, -15.7942]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //NEW DELHI
+                                'description': '<strong>Indian official charged in New York assassination plot with ties to New Delhi</strong><p>The Justice Department alleged that an Indian government employee participated in a foiled assassination plot against a U.S. citizen in New York City. The employee, identified as Rajeev Sharma, was arrested on Monday and charged with conspiracy to commit murder-for-hire and visa fraud. According to the indictment, Sharma and two co-conspirators planned to kill a human rights activist who had criticized the Indian government.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [77.2090, 28.6139]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //DAVOS
+                                'description': '<strong>Davos: Davos draws record crowds, but its relevance is fading</strong><p>The World Economic Forum’s annual meeting in Davos took place in the Swiss resort amid an energy crisis produced by the war in Ukraine, soaring inflation and rising interest rates. The event, which attracted a record 2,700 attendees, including world leaders and business executives, was overshadowed by the growing challenges of a fragmented and deglobalized world. Some analysts questioned whether Davos still had the influence and legitimacy to shape global agendas.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [9.8355, 46.8027]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SAN FRANCISCO
+                                'description': '<strong>San Francisco: Shoplifting reports in San Francisco on the decline, study shows</strong><p>Shoplifting in San Francisco is on the decline, according to a new study from the Council on Criminal Justice. The study, which analyzed data from 22 major U.S. cities, found that San Francisco had the largest drop in shoplifting reports from 2019 to 2020, with a 36% decrease. The study attributed the decline to a combination of factors, including increased security measures, reduced store hours and consumer demand, and changes in law enforcement practices.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-122.4194, 37.7749]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SHANGHAI
+                                'description': '<strong>Shanghai: Covestro to switch into high gear</strong><p>Covestro AG will put into operation a new polyurethane dispersions plant in Shanghai in the first quarter of 2024, a senior executive said, as the German chemical products manufacturer eyes surging demand from China’s high-end manufacturing industry. The plant, which will have an annual capacity of 25,000 metric tons, will produce waterborne polyurethane dispersions, a key raw material for coatings, adhesives and textiles.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [121.4737, 31.2304]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SINGAPORE
+                                'description': '<strong>Singapore defense minister calls on China to take the lead in reducing regional tensions</strong><p>Singapore’s defense minister urged China as a dominant power in Asia to take the lead in reducing tensions in the region, warning that a military conflict like the one in Ukraine or the Israel-Hamas war would be devastating for the continent and its future.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [103.8198, 1.3521]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //DUBAI
+                                'description': '<strong>Pope Francis says he has a lung inflammation but will go to Dubai this week for a climate conference</strong><p>Pope Francis on Sunday revealed that he has a lung inflammation but will go later this week to Dubai to address the climate change conference. Francis skipped his weekly Sunday appearance at a window overlooking St. Peter’s Square, a day after the Vatican said he was suffering from a mild flu. Instead, Francis gave the traditional noon blessing in an appearance televised live from the chapel in the Vatican hotel where he lives.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [55.296249, 25.276987]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //RIYADH
+                                'description': '<strong>Saudi Arabia’s capital Riyadh chosen to host the 2030 World Expo</strong><p>Saudi Arabia’s capital Riyadh was chosen Tuesday to host the 2030 World Expo following its bid that focused on shaping a prosperous and sustainable future, beating out Rome and the South Korean port city of Busan for an event expected to draw millions of visitors.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [46.6753, 24.7136]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //HONG KONG
+                                'description': '<strong>A Hong Kong court hears final arguments in the subversion trial of pro-democracy activists</strong><p>A Hong Kong court started hearing the final arguments Wednesday of some of the citys best-known pro-democracy activists tried under a law imposed by Chinas ruling Communist Party to crush dissent. The activists subversion trial is the biggest prosecution yet under the national security law. They may face up to life in prison if convicted. The defendants were among 47 activists arrested in 2021 under the sweeping law imposed by Beijing following massive anti-government protests in 2019. They were charged in connection with an informal 2020 primary election to pick candidates who could win control of the territorys Legislative Council.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [114.1694, 22.3193]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SYDNEY
+                                'description': '<strong>Australian wildfire danger causes fire ban in Sydney and closes schools</strong><p>Sydney experienced its first total fire ban in almost three years on Tuesday and several schools along the New South Wales state coast to the south were closed because of a heightened wildfire danger, caused by unusually hot and dry conditions across southeast Australia.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [151.2093, -33.8688]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //ZURICH
+                                'description': '<strong>Zurich Ring Cycle focuses on dysfunctional family of gods</strong><p>Wotan beckoned the other gods to join him in walking to Valhalla, their new home acquired at a high and painful price. Instead of following, they shot him looks of contempt and allowed him to enter on his own. Andreas Homoki’s production of Richard Wagner’s “Das Rheingold” that opened at the Zurich Opera on Saturday night is a family affair, stripping Wagner’s mythology of usual trappings, instead laser-focused on a dysfunctional, brooding bunch consumed by greed. No rainbow bridge, no hint of a river, mountaintop or underground mine, not even an eye patch.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [8.5417, 47.3769]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SEOUL
+                                'description': '<strong>South Korea says Russian support likely enabled North Korea to successfully launch a spy satellite</strong><p>South Korea has concluded that Russian support likely enabled North Korea to put a spy satellite into orbit for the first time this week, and it should be clear in several days whether it is functioning properly, officials said Thursday.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [126.9780, 37.5665]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //VIENNA
+                                'description': '<strong>Taliban suspend Afghan consular services in Vienna and London for lack of transparency, coordination</strong><p>The Taliban are suspending consular services at two Afghan embassies, London and Vienna, over their lack of transparency and cooperation with authorities in Kabul, a foreign ministry spokesman said Sunday.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [16.3738, 48.2082]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //FRANKFURT
+                                'description': '<strong>The worst-performing major economy also faces a budget crisis. Germany’s leader vows fixes, but how?</strong><p>German Chancellor Olaf Scholz vowed Tuesday that his government will work “as fast as possible” to solve a budget crisis, but he offered few details on how he would achieve his goals of promoting clean energy and modernizing the struggling economy after a court decision struck down billions in planned spending.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [8.6821, 50.1109]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //MUMBAI
+                                'description': '<strong>Fire sweeps through a 6-story residential building in Mumbai, killing 6 and injuring dozens</strong><p>A fire swept through a six-story residential building Friday, leaving at least six dead and another 38 injured in Mumbai, India’s financial and entertainment capital, a fire official said.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [72.8777, 19.0760]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //LOS ANGELES
+                                'description': '<strong>Golden State visits Los Angeles on 3-game road skid</strong><p>Golden State will attempt to break its three-game road skid when the Warriors face Los Angeles.The Clippers are 7-8 against Western Conference opponents. Los Angeles is 4-5 when it turns the ball over less than its opponents and averages 12.9 turnovers per game.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-118.2437, 34.0522]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //JOHANNESBURG
+                                'description': '<strong>South Africa march demands a permanent Gaza cease-fire on day of solidarity with Palestinians</strong><p>Members of South African political parties, civil society organisations and other supporters marched through the streets of Johannesburg on Wednesday demanding a permanent cease-fire in Gaza as they marked the International Day of Solidarity with the Palestinian People.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [28.0473, -26.2041]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //TORONTO
+                                'description': '<strong>Brooklyn and Toronto meet for conference matchup</strong><p>Scottie Barnes and the Toronto Raptors visit Mikal Bridges and the Brooklyn Nets on Tuesday.The Nets are 0-3 against Atlantic Division teams. Brooklyn has a 1-2 record in one-possession games.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-79.3832, 43.6532]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //ISTANBUL
+                                'description': '<strong>Istanbul’s popular mayor faces prison, political ban on new charge of rigging tender bids</strong><p>Istanbul’s popular mayor went on trial Thursday on charges that he was involved in the alleged rigging of bids on a tender dating back to 2015. Critics have called the trial another politically motivated “plot” aiming to remove the opposition politician from the political scene.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [28.9784, 41.0082]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //MEXICO CITY
+                                'description': '<strong>Five journalists were shot in one day in Mexico, officials confirm</strong><p>Mexico’s president said Wednesday that two of four news photographers who were shot Tuesday are in serious condition, as prosecutors confirmed that a fifth journalist was shot and wounded the same day.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-99.1332, 19.4326]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //CAIRO
+                                'description': '<strong>Israeli evacuation call in Gaza hikes Egypt’s fears of a mass exodus of refugees into its territory</strong><p>Since Hamas’ bloody attack on Israel sparked a massive retaliation in Gaza, Egypt’s leadership has frantically tried to negotiate the entry of humanitarian aid through its crossing into the Palestinian territory — partially in hopes of averting an exodus into Egypt’s Sinai Peninsula. Officials say its efforts have received no response from Israel.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [31.2357, 30.0444]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //BUENOS AIRES
+                                'description': '<strong>Who is Argentina’s Javier Milei?</strong><p>This isn’t Carnival or ComicCon, but rather the outlandish campaign rally for Argentine presidential candidate Javier Milei. In just a few years, the rightwing populist Milei went from being a television talking head who garnered high ratings with his unrestrained outbursts against a “political caste” he blamed for Argentina’s perennial economic woes to a frontrunner for the presidency.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-58.3816, -34.6037]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //STOCKHOLM
+                                'description': '<strong>Turkish parliamentary committee delays decision on Sweden’s NATO membership bid</strong><p>The Turkish Parliament’s foreign affairs committee on Thursday opened debate on Sweden’s bid to join NATO, but adjourned the proceedings until a later date without reaching a decision.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [18.0686, 59.3293]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //BUDAPEST
+                                'description': '<strong>Thousands march at Budapest Pride as LGBTQ+ community voices anxiety over Hungary’s restrictive laws</strong><p>Thousands of participants of the Budapest Pride march wound through the streets of the Hungarian capital on Saturday with marchers voicing their anxiety over the increasing pressure on the LGBTQ+ community from the country’s right-wing government.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [19.0402, 47.4979]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //NAIROBI
+                                'description': '<strong>Kenya raises alarm as flooding death toll rises to 76, with thousands marooned by worsening rains</strong><p>At least 76 people have died and 40,000 displaced from their homes since the rains began pounding the country in October. President William Ruto convened an emergency cabinet meeting on Monday and said 38 of Kenya’s 47 counties had been affected by floods and mudslides made worse by the El Niño phenomenon.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [36.8219, -1.2921]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //JAKARTA
+                                'description': '<strong>Coal power, traffic, waste burning a toxic smog cocktail in Indonesia’s Jakarta</strong><p>Pollution is causing a rise in respiratory illnesses and deaths in northern Java, including Jakarta, experts say. Smog in the metropolis of 11.2 million people comes from a combination of the coal-fired plants, vehicle and motorcycle exhaust, trash burning and industries, and many in the city are demanding that the government take action.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [106.8456, -6.2088]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //TEL AVIV
+                                'description': '<strong>Wartime Israel shows little tolerance for Palestinian dissent</strong><p>Bayan Khateeb knows she’s a terrible cook. So when she managed to pull off a dish of cooked tomatoes and eggs, she took a photo to show friends on social media. “Soon we shall eat the Shakshouka of victory!” crowed her caption, which included an emoji of the Palestinian flag. Khateeb intended the Oct. 8 Instagram post as a joke, she said. But in the fraught atmosphere that has gripped Israel since Hamas’ Oct. 7 attack, statements that might have once sounded innocuous have taken on more sinister meaning and resulted in scores of arrests. A classmate saw the post and thought Khateeb, a Palestinian citizen of Israel, was cheering on Hamas. When the post was shared more widely, Khateeb suddenly found herself accused online of supporting terrorism. The next thing she knew, she was suspended from her studies at a prestigious university, ejected from her dorm, fired from her two jobs and interrogated in shackles by Israeli police.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [34.7818, 32.0853]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //ABU DHABI
+                                'description': '<strong>Loans pave way for Abu Dhabi-backed fund to take over UK’s Telegraph newspaper</strong><p>An Abu Dhabi-backed investment fund said Monday it has paved the way to take ownership of Britain’s Telegraph newspaper and The Spectator magazine after striking a deal with the publications’ previous owners to repay debts owed by them.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [54.3773, 24.4539]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //OSLO
+                                'description': '<strong>Norway activists renew protest against wind farm on land used by herders</strong><p>Dozen of activists protested Wednesday at Norway’s parliament to express frustration over the Norwegian government’s failure to shut down a wind farm they say endangers the way of life of Sami reindeer herders.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [10.7522, 59.9139]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //BANGKOK
+                                'description': '<strong>Hong Kong eyes stronger economic and trade ties with Thailand to expand its role in Southeast Asia</strong><p>Hong Kong’s leader said Tuesday the city would seek to strengthen its economic and trade ties with Thailand after a meeting with the country’s prime minister, as the Chinese financial hub looks for more business opportunities in Southeast Asia</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [100.5018, 13.7563]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //MILAN
+                                'description': '<strong>Newcastle fan stabbed 3 times in Milan ahead of Champions League opener</strong><p>A Newcastle fan is reportedly in stable condition in hospital after being stabbed in Milan ahead of a Champions League match in the Italian city.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [9.1900, 45.4642]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //MADRID
+                                'description': '<strong>Madrid prepares for heavy rain, cancels trains and soccer game</strong><p>Forecasts of heavy rain in central Spain on Sunday led authorities to shut down train lines, cancel a Spanish league soccer game and order citizens to stay indoors.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-3.7038, 40.4168]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //AMSTERDAM
+                                'description': '<strong>Ukrainian children war diaries on show in Amsterdam</strong><p>An exhibition that opened at Amsterdam City Hall on Thursday offers a vision of the war in Ukraine as experienced by children caught in the devastating conflict.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [4.8952, 52.3676]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //SAO PAULO
+                                'description': '<strong>Strike over privatizing Sao Paulo public transport causes crowds, delays in metro area of 20 million</strong><p>Long lines have appeared in Sao Paulo’s bus and subway stations as a strike opposing privatization efforts of public transport in South America’s largest city caused delays.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-46.6333, -23.5505]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //COPENHAGEN
+                                'description': '<strong>Denmark seeks to legally prevent burnings of Quran or other religious scriptures</strong><p>Denmark’s foreign minister says the government will seek to make it illegal to desecrate the Quran or other holy books in front of foreign embassies.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [12.5683, 55.6761]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //DOHA
+                                'description': '<strong>Qatar becomes a key intermediary in Israel-Hamas war as fate of hostages hangs in the balance</strong><p>The gas-rich nation of Qatar has become a key intermediary over the fate of more than 200 hostages held by Hamas militants after their unprecedented attack on Israel over two weeks ago.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [51.5310, 25.2854]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //LAGOS
+                                'description': '<strong>Nigeria’s president approves spending millions on a presidential yacht and SUVs for lawmakers</strong><p>Nigeria’s president has signed a controversial bill that earmarks $6.1 million for a presidential yacht and millions more for sport utility vehicles for his wife and other top government officials.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [3.3792, 6.5244]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //BOGOTA
+                                'description': '<strong>Colombians take to streets in motorcycles, cars and buses to protest gas price increase</strong><p>Thousands of people have taken to the streets of Bogota to protest recent hikes in gas prices that have drastically increased the cost of fuel in Colombia.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-74.0721, 4.7110]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //WARSAW
+                                'description': '<strong>Poland’s outgoing minister asks new legislators to seek further war reparations from Germany</strong><p>Poland’s outgoing deputy foreign minister has written to newly-elected legislators and senators to urge them to continue to seek some $1.3 trillion in reparations from Germany for the Nazis’ World War II invasion and occupation of the country.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [21.0122, 52.2297]
+                            }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                //DUBLIN
+                                'description': '<strong>Ireland’s prime minister condemns anti-immigrant protesters who rampaged through central Dublin</strong><p>Ireland’s prime minister has condemned anti-immigrant protesters who rampaged through central Dublin after three young children were stabbed, saying the rioters simply wanted to cause chaos, not protect the country’s way of life.</p>'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-6.2603, 53.3498]
+                            }
+                        }
+                    ]
+                }
+            });
+            // Add a layer showing the places.
+            map.addLayer({
+                'id': 'places',
+                'type': 'circle',
+                'source': 'places',
+                'paint': {
+                    'circle-color': '#4264fb',
+                    'circle-radius': 6,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            });
+
+            // Create a popup, but don't add it to the map yet.
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            map.on('mouseenter', 'places', (e) => {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+
+                // Copy coordinates array.
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const description = e.features[0].properties.description;
+
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(coordinates).setHTML(description).addTo(map);
+            });
+
+            map.on('mouseleave', 'places', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+        });
+
+        // Add geolocate control to the map.
+        map.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                // When active the map will receive updates to the device's location as it changes.
+                trackUserLocation: true,
+                // Draw an arrow next to the location dot to indicate which direction the device is heading.
+                showUserHeading: true
+            })
+        );
+    </script>
+</body>
+</html>
